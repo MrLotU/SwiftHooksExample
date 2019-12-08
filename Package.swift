@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "Example",
     dependencies: [
-        .package(url: "../SwiftHooks", .branch("master")),
-        .package(url: "../Discord", .branch("master"))
+        .package(path: "../SwiftHooks"),
+        .package(path: "../Discord")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

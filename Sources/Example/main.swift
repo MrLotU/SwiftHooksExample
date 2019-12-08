@@ -1,19 +1,17 @@
 import SwiftHooks
 import Discord
+import Foundation
 
 let swiftHooks = SwiftHooks()
-
-try swiftHooks.hook(DiscordHook.self, DiscordHookOptions(token: ""))
-
-//print(swiftHooks.globalListeners)
-//print(swiftHooks.hooks)
+let token = ProcessInfo.processInfo.environment["TOKEN"]!
+try swiftHooks.hook(DiscordHook.self, DiscordHookOptions(token: token))
 
 class MyPlugin: Plugin {
     
-    @Command("ping")
-    var closure = { (hooks, event, command) in
-        print("Ping succeed!")
-    }
+//    @Command("ping")
+//    var closure = { (hooks, event, command) in
+//        print("Ping succeed!")
+//    }
     
     @Listener(DiscordEvent.guildCreate)
     var guildListener = { guild in
@@ -32,8 +30,5 @@ class MyPlugin: Plugin {
 }
 
 swiftHooks.register(MyPlugin())
-
-//print(swiftHooks.commands)
-//print(swiftHooks.globalListeners)
 
 try swiftHooks.run()
