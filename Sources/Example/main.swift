@@ -13,12 +13,15 @@ class MyPlugin: Plugin {
 //        print("Ping succeed!")
 //    }
     
-    @Listener(DiscordEvent.guildCreate)
+    @Listener(Discord.guildCreate)
     var guildListener = { guild in
-        print("Other guild thing \(guild.name)")
+        print("""
+            Succesfully loaded \(guild.name).
+            It has \(guild.members.count) members and \(guild.channels.count) channels.
+        """)
     }
     
-    @Listener(DiscordEvent.messageCreate)
+    @Listener(Discord.messageCreate)
     var messageListener = { message in
         print("Discord: \(message.content)")
     }
