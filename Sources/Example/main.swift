@@ -24,6 +24,21 @@ class MyPlugin: Plugin {
     @Listener(Discord.messageCreate)
     var messageListener = { message in
         print("Discord: \(message.content)")
+        print("Flags: \(message.flags)")
+        if let flags = message.flags {
+            print(flags.contains(.isCrossposted))
+            print(flags.contains(.sourceMessageDeleted))
+        }
+    }
+    
+    @Listener(Discord.messageUpdate)
+    var updateListener = { message in
+        print("Discord: \(message.content)")
+        print("Flags: \(message.flags)")
+        if let flags = message.flags {
+            print(flags.contains(.isCrossposted))
+            print(flags.contains(.sourceMessageDeleted))
+        }
     }
     
     @GlobalListener(GlobalEvent.messageCreate)
