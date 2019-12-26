@@ -1,10 +1,12 @@
 import SwiftHooks
 import Discord
+import GitHub
 import Foundation
 
 let swiftHooks = SwiftHooks()
 let token = ProcessInfo.processInfo.environment["TOKEN"]!
-try swiftHooks.hook(DiscordHook.self, DiscordHookOptions(token: token))
+//try swiftHooks.hook(DiscordHook.self, DiscordHookOptions(token: token))
+try swiftHooks.hook(GitHubHook.self, GitHubHookOptions())
 
 class MyPlugin: Plugin {
     

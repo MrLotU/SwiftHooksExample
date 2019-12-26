@@ -5,15 +5,19 @@ import PackageDescription
 
 let package = Package(
     name: "Example",
+    platforms: [
+       .macOS(.v10_14)
+    ],
     dependencies: [
         .package(path: "../SwiftHooks"),
-        .package(path: "../Discord")
+        .package(path: "../Discord"),
+        .package(path: "../GitHub")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Example",
-            dependencies: ["SwiftHooks", "Discord"]),
+            dependencies: ["SwiftHooks", "Discord", "GitHub"]),
     ]
 )
