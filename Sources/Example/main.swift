@@ -14,7 +14,7 @@ try swiftHooks.hook(GitHubHook.self, .createApp(host: "0.0.0.0", port: 8080))
 // Or use a standalone Hook if that's all you need.
 
 let elg = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
-let gitHub = GitHubHook(.createApp(host: "0.0.0.0", port: 8080))
+let gitHub = GitHubHook(.createApp(host: "0.0.0.0", port: 8080), elg)
 
 // Create plugins to register listeners & commands.
 // NOTE: Commands & GlobalListeners only work when using SwiftHooks.
@@ -73,4 +73,4 @@ swiftHooks.register(MyPlugin())
 // Run the system!
 
 try swiftHooks.run()
-//try gitHub.boot(on: elg)
+//try gitHub.boot()
