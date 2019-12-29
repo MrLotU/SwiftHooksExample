@@ -9,9 +9,9 @@ let package = Package(
        .macOS(.v10_14)
     ],
     dependencies: [
-        .package(path: "../SwiftHooks"),
-        .package(path: "../Discord"),
-        .package(path: "../GitHub")
+        .package(url: "https://github.com/MrLotU/SwiftHooks.git", .branch("master")),
+        .package(url: "https://github.com/MrLotU/SwiftHooksDiscord.git", .branch("master")),
+        .package(url: "https://github.com/MrLotU/SwiftHooksGitHub.git", .branch("master")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
