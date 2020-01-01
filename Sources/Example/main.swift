@@ -7,14 +7,14 @@ import Foundation
 // Use SwiftHooks for global events & builtin command handling
 
 let swiftHooks = SwiftHooks()
-//let token = ProcessInfo.processInfo.environment["TOKEN"]!
-//try swiftHooks.hook(DiscordHook.self, .init(token: token))
-try swiftHooks.hook(GitHubHook.self, .createApp(host: "0.0.0.0", port: 8080))
+let token = ProcessInfo.processInfo.environment["TOKEN"]!
+try swiftHooks.hook(DiscordHook.self, .init(token: token))
+//try swiftHooks.hook(GitHubHook.self, .createApp(host: "0.0.0.0", port: 8080))
 
 // Or use a standalone Hook if that's all you need.
 
-let elg = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
-let gitHub = GitHubHook(.createApp(host: "0.0.0.0", port: 8080), elg)
+//let elg = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
+//let gitHub = GitHubHook(.createApp(host: "0.0.0.0", port: 8080), elg)
 
 // Create plugins to register listeners & commands.
 // NOTE: Commands & GlobalListeners only work when using SwiftHooks.
@@ -42,18 +42,8 @@ class MyPlugin: Plugin {
     @Listener(Discord.messageCreate)
     var messageListener = { message in
         print("Discord: \(message.content)")
-        if let flags = message.flags {
-            print(flags.contains(.isCrossposted))
-            print(flags.contains(.sourceMessageDeleted))
-        }
-    }
-    
-    @Listener(Discord.messageUpdate)
-    var updateListener = { message in
-        print("Discord: \(message.content)")
-        if let flags = message.flags {
-            print(flags.contains(.isCrossposted))
-            print(flags.contains(.sourceMessageDeleted))
+        if message.content == "!ping" {
+            message.reply("PONG!")
         }
     }
     
