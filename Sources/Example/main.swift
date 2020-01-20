@@ -21,18 +21,18 @@ try swiftHooks.hook(DiscordHook.self, .init(token: token))
 
 class MyPlugin: Plugin {
     
-//    @Command("ping")
-//    var closure = { (hooks, event, command) in
-//        print("Ping succeed!")
-//    }
-    
-    @Listener(GitHub.issueComment)
-    var onIssueComment = { event in
-        print("GitHub: \(event.content)")
+    @Command("ping")
+    var closure = { (hooks, event, command) in
+        print("Ping succeed!")
     }
     
+    @Listener(GitHub.issueComment)
+    var onIssueComment = { event, comment in
+        print("GitHub: \(comment.content)")
+    }
+
     @Listener(Discord.guildCreate)
-    var guildListener = { guild in
+    var guildListener = { event, guild in
         print("""
             Succesfully loaded \(guild.name).
             It has \(guild.members.count) members and \(guild.channels.count) channels.
@@ -40,15 +40,15 @@ class MyPlugin: Plugin {
     }
     
     @Listener(Discord.messageCreate)
-    var messageListener = { message in
+    var messageListener = { event, message in
         print("Discord: \(message.content)")
         if message.content == "!ping" {
             message.reply("PONG!")
         }
     }
-    
+
     @GlobalListener(GlobalEvent.messageCreate)
-    var globalMessageListener = { message in
+    var globalMessageListener = { event, message in
         print("Global: \(message.content)")
     }
 }
@@ -57,6 +57,7 @@ class MyPlugin: Plugin {
 // Either SwiftHooks or your Hook
 
 swiftHooks.register(MyPlugin())
+swiftHooks.register(FunPlugin())
 //gitHub.register(MyPlugin())
 
 
