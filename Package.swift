@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Example",
     platforms: [
-       .macOS(.v10_14)
+       .macOS(.v10_15)
     ],
     dependencies: [
         .package(url: "https://github.com/MrLotU/SwiftHooks.git", .branch("master")),
