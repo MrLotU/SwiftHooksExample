@@ -5,7 +5,7 @@ import GitHub
 import Foundation
 
 // Use SwiftHooks for global events & builtin command handling
-let swiftHooks = SwiftHooks()
+let swiftHooks = SwiftHooks(config: .init(commands: .init(prefix: "!")))
 
 let token = ProcessInfo.processInfo.environment["TOKEN"]!
 try swiftHooks.hook(DiscordHook.self, .init(token: token))
@@ -24,14 +24,30 @@ class MyPlugin: Plugin {
     var commands: some Commands {
         Group {
             Command("echo")
-                .arg(String.self, named: "content", .requiredConsume)
-                .execute { (hooks, event, argOne) in
-                    event.message.reply(argOne)
-                }
+                .arg(Int.self, named: "times")
+                .arg(String.Consuming?.self, named: "content")
+                .execute { (hooks, event, times, content) in
+                    event.message.reply(Array(repeating: content ?? "You gave me no content!", count: times).joined(separator: "\n"))
+            }
+            
+            Command("optionals")
+                .arg(Int?.self, named: "a")
+                .arg(String?.self, named: "b")
+                .execute { (hooks, event, a, b) in
+                    print(a as Any, b as Any)
+            }
+            
             Command("ping")
                 .execute { (hooks, event) in
                     event.message.reply("Pong!")
                     print("Ping succeed!")
+            }
+            
+            Command("avatar")
+                .onHook(.discord)
+                .arg([Discord.User].self, named: "users")
+                .execute { (hooks, event, users) in
+                    event.message.reply(users.map(\.avatarUrl).joined(separator: " "))
             }
             
             Command("mone")
@@ -42,17 +58,17 @@ class MyPlugin: Plugin {
                     event.message.reply("\(a + b + c)")
             }
             
-            Command("mtwo")
-                .arg(Int.self, named: "a")
-                .arg(Int.self, named: "b")
-                .arg(Int.self, named: "c")
-                .arg(Int.self, named: "d")
+            Command("args")
+                .arg(Int?.self, named: "a")
+                .arg(String.self, named: "b")
+                .arg(Int?.self, named: "c")
+                .arg(String?.self, named: "d")
                 .execute { (hooks, event, args) in
-                    let a = try args.get(Int.self, named: "a", on: event)
-                    let b = try args.get(Int.self, named: "b", on: event)
-                    let c = try args.get(Int.self, named: "c", on: event)
-                    let d = try args.get(Int.self, named: "d", on: event)
-                    event.message.reply("\(a + b + c + d)")
+                    let a = try args.get(Int?.self, named: "a", on: event)
+                    let b = try args.get(String.self, named: "b", on: event)
+                    let c = try args.get(Int?.self, named: "c", on: event)
+                    let d = try args.get(String?.self, named: "d", on: event)
+                    event.message.reply("\(a as Any) + \(b) + \(c as Any) + \(d as Any)")
             }
         }
     }
@@ -71,7 +87,7 @@ class MyPlugin: Plugin {
                 print("""
                     Succesfully loaded \(guild.name).
                     It has \(guild.members.count) members and \(guild.channels.count) channels.
-                """)
+                    """)
             }
             
             GlobalListener(GlobalEvent.messageCreate) { event, message in
@@ -84,10 +100,8 @@ class MyPlugin: Plugin {
 // Register your plugin to the system.
 // Either SwiftHooks or your Hook
 
-swiftHooks.register(MyPlugin())
+try swiftHooks.register(MyPlugin())
 //gitHub.register(MyPlugin())
-
-print(swiftHooks.commands)
 
 // Run the system!
 
